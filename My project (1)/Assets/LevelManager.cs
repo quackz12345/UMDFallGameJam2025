@@ -6,6 +6,7 @@ public class LevelManager : MonoBehaviour
     [Header("Level Prefabs")]
     public List<GameObject> levelPrefabs; // Add all your prefabs here
     public int initialPieces = 3;         // Pieces spawned at start
+    public float spawnOffset = 50f;        // Extra distance between pieces
 
     private List<GameObject> activeLevels = new List<GameObject>();
     private Transform player;
@@ -28,7 +29,7 @@ public class LevelManager : MonoBehaviour
         GameObject lastLevel = activeLevels[activeLevels.Count - 1];
         float lastLevelEndZ = lastLevel.transform.position.z + GetPrefabLength(lastLevel) / 2f;
 
-        float spawnBuffer = 20f; // How far ahead to spawn
+        float spawnBuffer = 20f; // How far ahead to trigger the next spawn
         if (player.position.z > lastLevelEndZ - spawnBuffer)
         {
             SpawnNextLevel();
@@ -45,7 +46,7 @@ public class LevelManager : MonoBehaviour
         if (activeLevels.Count > 0)
         {
             GameObject lastLevel = activeLevels[activeLevels.Count - 1];
-            spawnZ = lastLevel.transform.position.z + GetPrefabLength(lastLevel);
+            spawnZ = lastLevel.transform.position.z + GetPrefabLength(lastLevel) + spawnOffset;
         }
 
         GameObject newLevel = Instantiate(prefab, new Vector3(0, 0, spawnZ), Quaternion.identity);
