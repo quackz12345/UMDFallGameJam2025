@@ -1,24 +1,26 @@
-using System;
 using UnityEngine;
 
 public class ProceduralDestructibleWall : MonoBehaviour
 {
-    public int piecesX = 10;
-    public int piecesY = 10;
-    public int piecesZ = 10;
+    [Header("Wall Settings")]
+    public int piecesX = 3;
+    public int piecesY = 3;
+    public int piecesZ = 1;
     public float pieceSpacing = 0.01f;
 
-    public float explosionForce = 350;
-    public float explosionRadius = 3f;
-    public float explosionUpward = 0.8f;
+    [Header("Explosion Settings")]
+    public float explosionForce = 200f;
+    public float explosionRadius = 2f;
+    public float explosionUpward = 0.5f;
+
+    [Header("Forward Motion")]
+    public float forwardVelocity = 5f; // Speed to push pieces forward (Z axis)
 
     private bool broken = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("enter");
         if (broken) return;
-
         if (other.CompareTag("Player"))
         {
             BreakWall();
@@ -55,7 +57,12 @@ public class ProceduralDestructibleWall : MonoBehaviour
 
                     Rigidbody rb = piece.AddComponent<Rigidbody>();
                     rb.mass = 1f;
+
+                    // Apply explosion force
                     rb.AddExplosionForce(explosionForce, transform.position, explosionRadius, explosionUpward, ForceMode.Impulse);
+
+                    // Push forward along Z
+                    rb.velocity = Vector3.forward * forwardVelocity;
 
                     Destroy(piece, 5f); // optional: cleanup pieces
                 }
