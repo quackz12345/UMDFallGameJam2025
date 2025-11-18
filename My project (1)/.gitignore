@@ -97,3 +97,11 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+
+My project (1)/ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
+My project (1)/Packages/packages-lock.json
+My project (1)/Packages/manifest.json
+My project (1)/.vscode/settings.json
+My project (1)/.vscode/launch.json
+My project (1)/.vscode/extensions.json
+My project (1)/Packages/packages-lock.json
