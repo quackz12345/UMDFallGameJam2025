@@ -246,7 +246,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a05254bdfdf73b45821f38505d6f287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brokenWallPrefab: {fileID: 6874093391669299972, guid: e16cc250b72c76e47b419e0b9d160858, type: 3}
+  piecesX: 10
+  piecesY: 10
+  piecesZ: 10
+  pieceSpacing: 0.01
+  explosionForce: 200
+  explosionRadius: 3
+  explosionUpward: 0.5
 --- !u!65 &511463185
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -365,7 +371,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a05254bdfdf73b45821f38505d6f287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brokenWallPrefab: {fileID: 6874093391669299972, guid: e16cc250b72c76e47b419e0b9d160858, type: 3}
+  piecesX: 10
+  piecesY: 10
+  piecesZ: 10
+  pieceSpacing: 0.01
+  explosionForce: 350
+  explosionRadius: 3
+  explosionUpward: 0.8
 --- !u!65 &645177084
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -735,7 +747,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a05254bdfdf73b45821f38505d6f287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brokenWallPrefab: {fileID: 6874093391669299972, guid: e16cc250b72c76e47b419e0b9d160858, type: 3}
+  piecesX: 10
+  piecesY: 10
+  piecesZ: 10
+  pieceSpacing: 0.01
+  explosionForce: 350
+  explosionRadius: 3
+  explosionUpward: 0.8
 --- !u!65 &1475000601
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -940,7 +958,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a05254bdfdf73b45821f38505d6f287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brokenWallPrefab: {fileID: 6874093391669299972, guid: e16cc250b72c76e47b419e0b9d160858, type: 3}
+  piecesX: 20
+  piecesY: 20
+  piecesZ: 1
+  pieceSpacing: 0.01
+  explosionForce: 350
+  explosionRadius: 3
+  explosionUpward: 0.8
 --- !u!1 &2037380112
 GameObject:
   m_ObjectHideFlags: 0
