@@ -2,37 +2,44 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float forwardSpeed = 10f;
-    public float sideSpeed = 8f;
-    public float verticalSpeed = 6f;
-    public float boostMultiplier = 1.5f;
+    [Header("Movement Settings")]
+    public float forwardSpeed = 15f;
+    public float sideSpeed = 30f;
+    public float verticalSpeed = 4f;
+    public float boostMultiplier = 1.8f;
 
+    [Header("Camera Tilt Settings")]
     public float maxRoll = 45f;     // camera roll
-    public float maxPitch = 25f;    // camera pitch
-    public float tiltSpeed = 5f;
+    public float maxPitch = 20f;    // camera pitch
+    public float tiltSpeed = 4f;
 
+    [Header("Virtual FPS Settings")]
+    public float virtualFPS = 100f; // virtual fixed FPS
+
+    [Header("References")]
+    public Transform cameraTransform;
+
+    // --- Internal state ---
     private float currentRoll = 0f;
     private float currentPitch = 0f;
 
-    public Transform cameraTransform;  // assign your camera here
-
     void Update()
     {
-        // --- BOOST ---
-        float boost = Input.GetKey(KeyCode.Space) ? boostMultiplier : 1f;
-
-        // --- PLAYER MOVEMENT ---
+        // --- INPUT ---
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
+        float boost = Input.GetKey(KeyCode.Space) ? boostMultiplier : 1f;
 
-        // Move the player
-        transform.position += transform.forward * forwardSpeed * boost * Time.deltaTime;
-        transform.position += transform.right * horizontal * sideSpeed * Time.deltaTime;
-        transform.position += transform.up * vertical * verticalSpeed * Time.deltaTime;
+        // --- VIRTUAL FIXED FPS MOVEMENT ---
+        float fixedDelta = 1f / virtualFPS;
 
-        // --- CAMERA VISUAL TILT ---
-        currentRoll = Mathf.Lerp(currentRoll, -horizontal * maxRoll, Time.deltaTime * tiltSpeed);
-        currentPitch = Mathf.Lerp(currentPitch, -vertical * maxPitch, Time.deltaTime * tiltSpeed);
+        transform.position += transform.forward * forwardSpeed * boost * fixedDelta;
+        transform.position += transform.right * horizontal * sideSpeed * fixedDelta * (boost/2f);
+        transform.position += transform.up * vertical * verticalSpeed * fixedDelta * (boost/2f);
+
+        // --- CAMERA VISUAL TILT (smooth) ---
+        currentRoll = Mathf.Lerp(currentRoll, -horizontal * maxRoll, fixedDelta * tiltSpeed);
+        currentPitch = Mathf.Lerp(currentPitch, -vertical * maxPitch, fixedDelta * (tiltSpeed*0.2f));
 
         if (cameraTransform != null)
         {

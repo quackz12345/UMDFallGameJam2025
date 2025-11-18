@@ -118,4 +118,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a05254bdfdf73b45821f38505d6f287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  brokenWallPrefab: {fileID: 0}
+  piecesX: 10
+  piecesY: 10
+  piecesZ: 10
+  pieceSpacing: 0.01
+  explosionForce: 350
+  explosionRadius: 3
+  explosionUpward: 0.8
