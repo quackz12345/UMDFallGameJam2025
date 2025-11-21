@@ -580,11 +580,11 @@ MonoBehaviour:
   - {fileID: 7491008959486934198}
   - {fileID: 3588943756912096895}
   enableChances:
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
 --- !u!1001 &2101257734669863051
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -850,13 +850,13 @@ MonoBehaviour:
   - {fileID: 1192400713245830594}
   - {fileID: 4869377471291583893}
   enableChances:
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
 --- !u!4 &2463519247542547320 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4730639306552576, guid: 8f63f2ffa1140de49a84add99bad9eee, type: 3}
@@ -1529,7 +1529,7 @@ MonoBehaviour:
   - {fileID: 3014402353900165946}
   - {fileID: 5801906818323647763}
   enableChances:
-  - 0.9
+  - 0.1
   - 0.5
   - 0.5
 --- !u!4 &4238396133513281089 stripped

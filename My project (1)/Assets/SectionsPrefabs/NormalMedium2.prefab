@@ -292,12 +292,12 @@ MonoBehaviour:
   - {fileID: 5868627789150864407}
   - {fileID: 6436886100752268919}
   enableChances:
-  - 0.8
-  - 0.8
-  - 0.8
-  - 0.8
-  - 0.8
-  - 0.8
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
 --- !u!1001 &2070499856351119741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -418,12 +418,12 @@ MonoBehaviour:
   - {fileID: 7491008959486934198}
   - {fileID: 3588943756912096895}
   enableChances:
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
+  - 0.4
+  - 0.4
+  - 0.4
+  - 0.4
+  - 0.4
+  - 0.4
 --- !u!1001 &2985188839619534423
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1959,13 +1959,13 @@ MonoBehaviour:
   - {fileID: 6289026355036781163}
   - {fileID: 3264364825097903278}
   enableChances:
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
-  - 0.7
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
+  - 0.3
 --- !u!4 &4238396133513281089 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4730639306552576, guid: 8f63f2ffa1140de49a84add99bad9eee, type: 3}
