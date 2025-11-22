@@ -492,7 +492,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 0.98233956, b: 0.7877358, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -1017,6 +1017,7 @@ MonoBehaviour:
   - {fileID: 5784030345845285521, guid: c3ca8bd871122d449bdd18bd753cc949, type: 3}
   - {fileID: 5784030345845285521, guid: a0e4c5dc9347c5e47b5162930882847e, type: 3}
   - {fileID: 5784030345845285521, guid: 98adb673006b7394d8e652aef37600a0, type: 3}
+  - {fileID: 5784030345845285521, guid: 17d27e6304827b649aadadec9264c1ee, type: 3}
   initialPieces: 3
   spawnOffset: 132.45
 --- !u!1660057539 &9223372036854775807

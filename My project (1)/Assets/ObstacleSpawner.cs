@@ -5,9 +5,9 @@ public class ObstacleSpawner : MonoBehaviour
     [Header("Child Objects to Toggle")]
     public GameObject[] objectsToToggle;
 
-    [Header("Chance for Each Object (0 to 1)")]
+    [Header("Chance to Disable Each Object (0 to 1)")]
     [Range(0f, 1f)]
-    public float[] enableChances;
+    public float[] disableChances;
 
     void Start()
     {
@@ -17,11 +17,11 @@ public class ObstacleSpawner : MonoBehaviour
     void ToggleObjectsRandomly()
     {
         // Auto-resize chance array if needed
-        if (enableChances == null || enableChances.Length != objectsToToggle.Length)
+        if (disableChances == null || disableChances.Length != objectsToToggle.Length)
         {
-            enableChances = new float[objectsToToggle.Length];
-            for (int i = 0; i < enableChances.Length; i++)
-                enableChances[i] = 0.5f; // default value
+            disableChances = new float[objectsToToggle.Length];
+            for (int i = 0; i < disableChances.Length; i++)
+                disableChances[i] = 0.5f; // default
         }
 
         for (int i = 0; i < objectsToToggle.Length; i++)
@@ -29,10 +29,12 @@ public class ObstacleSpawner : MonoBehaviour
             GameObject obj = objectsToToggle[i];
             if (obj == null) continue;
 
-            float chance = enableChances[i];
-            bool enable = Random.value < chance;
+            float disableChance = disableChances[i];
 
-            obj.SetActive(enable);
+            // TRUE = disable, FALSE = enable
+            bool disable = Random.value < disableChance;
+
+            obj.SetActive(!disable); // invert
         }
     }
 }
