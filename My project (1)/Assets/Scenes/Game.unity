@@ -592,12 +592,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardSpeed: 45
-  sideSpeed: 35
-  verticalSpeed: 8
+  sideSpeed: 40
+  verticalSpeed: 40
   boostMultiplier: 1.8
   maxRoll: 20
-  maxPitch: 18
-  tiltSpeed: 3
+  maxPitch: 45
+  tiltSpeed: 4
   cameraTransform: {fileID: 414257873}
 --- !u!136 &885427719
 CapsuleCollider:
@@ -1018,6 +1018,8 @@ MonoBehaviour:
   - {fileID: 5784030345845285521, guid: a0e4c5dc9347c5e47b5162930882847e, type: 3}
   - {fileID: 5784030345845285521, guid: 98adb673006b7394d8e652aef37600a0, type: 3}
   - {fileID: 5784030345845285521, guid: 17d27e6304827b649aadadec9264c1ee, type: 3}
+  - {fileID: 5784030345845285521, guid: 67c66ec42cb625b48b44ad35340ea42d, type: 3}
+  - {fileID: 5784030345845285521, guid: 44575e8876ee6ec4cae3c14ee7f0a739, type: 3}
   initialPieces: 3
   spawnOffset: 132.45
 --- !u!1660057539 &9223372036854775807

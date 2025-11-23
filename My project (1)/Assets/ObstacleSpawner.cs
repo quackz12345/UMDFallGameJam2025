@@ -9,6 +9,28 @@ public class ObstacleSpawner : MonoBehaviour
     [Range(0f, 1f)]
     public float[] disableChances;
 
+    // ------------------------------
+    // Auto-fill button for Inspector
+    // ------------------------------
+    [ContextMenu("Auto Fill From Children")]
+    void AutoFillFromChildren()
+    {
+        int count = transform.childCount;
+        objectsToToggle = new GameObject[count];
+
+        for (int i = 0; i < count; i++)
+            objectsToToggle[i] = transform.GetChild(i).gameObject;
+
+        // Also resize disable chances to match
+        disableChances = new float[count];
+        for (int i = 0; i < count; i++)
+            disableChances[i] = 0.5f;
+
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
+
     void Start()
     {
         ToggleObjectsRandomly();
@@ -21,7 +43,7 @@ public class ObstacleSpawner : MonoBehaviour
         {
             disableChances = new float[objectsToToggle.Length];
             for (int i = 0; i < disableChances.Length; i++)
-                disableChances[i] = 0.5f; // default
+                disableChances[i] = 0.5f;
         }
 
         for (int i = 0; i < objectsToToggle.Length; i++)

@@ -28,11 +28,11 @@ public class PlayerController : MonoBehaviour
         // Move the player
         transform.position += transform.forward * forwardSpeed * boost * Time.deltaTime;
         transform.position += transform.right * horizontal * sideSpeed * Time.deltaTime *(boost * .4f);
-        transform.position += transform.up * vertical * verticalSpeed * Time.deltaTime;
+        transform.position += transform.up * vertical * verticalSpeed * Time.deltaTime * (boost * .4f);
 
         // --- CAMERA VISUAL TILT ---
         currentRoll = Mathf.Lerp(currentRoll, -horizontal * maxRoll, Time.deltaTime * tiltSpeed);
-        currentPitch = Mathf.Lerp(currentPitch, -vertical * maxPitch, Time.deltaTime * tiltSpeed);
+        currentPitch = Mathf.Lerp(currentPitch, -vertical * maxPitch, Time.deltaTime * (tiltSpeed * .5f));
 
         if (cameraTransform != null)
         {
