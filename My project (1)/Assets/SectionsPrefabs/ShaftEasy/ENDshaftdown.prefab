@@ -3265,15 +3265,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4991436574765970, guid: 34772f74626e147439d4980b8a5d82d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.54
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 4991436574765970, guid: 34772f74626e147439d4980b8a5d82d3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.485
+      value: 5.535
       objectReference: {fileID: 0}
     - target: {fileID: 4991436574765970, guid: 34772f74626e147439d4980b8a5d82d3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.7
+      value: -4.8
       objectReference: {fileID: 0}
     - target: {fileID: 4991436574765970, guid: 34772f74626e147439d4980b8a5d82d3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -4875,8 +4875,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 728554842750810901, guid: f3c37a2a7bb12a4429642ec2783387d0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8724735331854149362}
   m_SourcePrefab: {fileID: 100100000, guid: f3c37a2a7bb12a4429642ec2783387d0, type: 3}
+--- !u!1 &7649056471995658110 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 728554842750810901, guid: f3c37a2a7bb12a4429642ec2783387d0, type: 3}
+  m_PrefabInstance: {fileID: 6934048714209711211}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8724735331854149362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7649056471995658110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8463e5977eba5da43aef88cbfe045174, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7651508483264167866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 726538576189221841, guid: f3c37a2a7bb12a4429642ec2783387d0, type: 3}

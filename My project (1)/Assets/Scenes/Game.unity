@@ -344,8 +344,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardSpeed: 30
-  sideSpeed: 60
-  verticalSpeed: 50
+  sideSpeedMultiplier: 2.2
+  verticalSpeed: 56
   boostMultiplier: 1.8
   maxRoll: 30
   maxPitch: 45
@@ -355,7 +355,7 @@ MonoBehaviour:
   rb: {fileID: 885427723}
   hitSound: {fileID: 8300000, guid: c681fc8be1bccbf488e96afb9f4eee84, type: 3}
   introDropAmount: 42
-  introDuration: 2
+  introDuration: 3
 --- !u!23 &885427720
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -468,8 +468,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.45782197, y: 4.786905, z: 15.361176}
-  m_Center: {x: -0.14880016, y: 1.3934518, z: 3.1585693}
+  m_Size: {x: 0.4084381, y: 4.5465536, z: 8.315887}
+  m_Center: {x: -0.065999985, y: 0.6542362, z: 1.5732574}
 --- !u!82 &885427725
 AudioSource:
   m_ObjectHideFlags: 0
@@ -482,7 +482,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: c681fc8be1bccbf488e96afb9f4eee84, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.508
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -556,7 +556,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.823
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -852,7 +852,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 414257875}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -928,8 +928,8 @@ Light:
   serializedVersion: 10
   m_Type: 0
   m_Shape: 0
-  m_Color: {r: 0.93710685, g: 0.9316623, b: 0.31531578, a: 1}
-  m_Intensity: 6
+  m_Color: {r: 1, g: 0.94987154, b: 0.5377358, a: 1}
+  m_Intensity: 4
   m_Range: 5000
   m_SpotAngle: 51
   m_InnerSpotAngle: 21.80208
@@ -1042,14 +1042,33 @@ MonoBehaviour:
   - pieces:
     - {fileID: 5784030345845285521, guid: eeb8e03ef64fd094689955a46aae74b5, type: 3}
     - {fileID: 5784030345845285521, guid: 56087b086bbafd84e94993a391a977a3, type: 3}
+  - pieces:
+    - {fileID: 5784030345845285521, guid: e38c5f9edc6c95146b562a7dce2e76d8, type: 3}
   endingPrefabs:
   - {fileID: 5784030345845285521, guid: 44575e8876ee6ec4cae3c14ee7f0a739, type: 3}
   - {fileID: 5784030345845285521, guid: c01227dc9783d8d4fa1be123013531c4, type: 3}
   - {fileID: 5784030345845285521, guid: 3a80027251b8f464580e5a7d6b28e6c9, type: 3}
   - {fileID: 5784030345845285521, guid: e38c5f9edc6c95146b562a7dce2e76d8, type: 3}
-  piecesPerLevel: 040000000a0000000400000001000000
-  maxActivePieces: 6
-  spawnBuffer: 300
+  - {fileID: 5784030345845285521, guid: e38c5f9edc6c95146b562a7dce2e76d8, type: 3}
+  piecesPerLevel: 0100000002000000020000000100000000000000
+  settingsPerLevel:
+  - fogDensity: 0.01
+    playerSpeed: 25
+    cameraFOV: 50
+  - fogDensity: 0.01
+    playerSpeed: 35
+    cameraFOV: 50
+  - fogDensity: 0.03
+    playerSpeed: 50
+    cameraFOV: 50
+  - fogDensity: 0.005
+    playerSpeed: 30
+    cameraFOV: 50
+  - fogDensity: 0
+    playerSpeed: 10
+    cameraFOV: 75
+  maxActivePieces: 7
+  spawnBuffer: 500
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

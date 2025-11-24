@@ -7,25 +7,44 @@ public class LevelManager : MonoBehaviour
     public GameObject tutorialPrefab;
 
     [Header("Levels")]
-    public List<LevelPieceSet> levelPieceSets;  // Level 0 = tutorial? Or starting at 1
+    public List<LevelPieceSet> levelPieceSets;  // Pool of prefabs per level
     public List<GameObject> endingPrefabs;      // Ending prefab per level
     public List<int> piecesPerLevel;            // How many random pieces to spawn per level
 
-    [Header("Settings")]
+    [Header("Level Settings")]
+    public List<LevelSettings> settingsPerLevel; // Fog, speed, FOV per level
+
+    [Header("General Settings")]
     public int maxActivePieces = 6;
     public float spawnBuffer = 300f;
 
     private List<GameObject> activePieces = new List<GameObject>();
     private Transform player;
-
-    private int currentLevel = -1;  
+    private int currentLevel = -1;
     private int piecesSpawnedThisLevel = 0;
     private bool spawningEnding = false;
 
     [System.Serializable]
     public class LevelPieceSet
     {
-        public List<GameObject> pieces;   // Pool for that level
+        public List<GameObject> pieces;
+    }
+    private int nextSettingIndex = 0;
+
+    public void ApplyNextLevelSetting()
+    {
+        if (nextSettingIndex >= settingsPerLevel.Count)
+            return;
+        nextSettingIndex++;
+        ApplyLevelSettings(nextSettingIndex);
+    }
+
+    [System.Serializable]
+    public class LevelSettings
+    {
+        public float fogDensity = 0.01f;
+        public float playerSpeed = 10f;
+        public float cameraFOV = 60f;
     }
 
     void Start()
@@ -39,7 +58,6 @@ public class LevelManager : MonoBehaviour
         if (activePieces.Count == 0) return;
 
         Vector3 lastEnd = GetEndPosition(activePieces[^1]);
-
         if (player.position.z > lastEnd.z - spawnBuffer)
         {
             SpawnNextPiece();
@@ -47,96 +65,85 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // -----------------------------
-    // TUTORIAL FIRST
-    // -----------------------------
     void SpawnTutorial()
     {
         GameObject tut = Instantiate(tutorialPrefab, Vector3.zero, Quaternion.identity);
         activePieces.Add(tut);
 
-        currentLevel = 0;  
+        currentLevel = 0;
         piecesSpawnedThisLevel = 0;
         spawningEnding = false;
+
+        ApplyLevelSettings(currentLevel);
     }
 
-    // -----------------------------
-    // SPAWN NEXT PIECE
-    // -----------------------------
     void SpawnNextPiece()
     {
+        // Safety: stop if no more levels
+        if (currentLevel >= levelPieceSets.Count)
+        {
+            Debug.Log("All levels complete!");
+            return;
+        }
+
         float spawnZ = activePieces.Count > 0 ? GetEndPosition(activePieces[^1]).z : 0f;
 
-        // Spawn ending?
+        // Spawn ending if flagged
         if (spawningEnding)
         {
-            GameObject endPrefab = endingPrefabs[currentLevel];
-            SpawnAligned(endPrefab, spawnZ);
+            if (currentLevel < endingPrefabs.Count && endingPrefabs[currentLevel] != null)
+                SpawnAligned(endingPrefabs[currentLevel], spawnZ);
 
-            // Move to next level
-            currentLevel++;
+            currentLevel++;           // Move to next level
             piecesSpawnedThisLevel = 0;
             spawningEnding = false;
 
-            // Finished all levels
-            if (currentLevel >= levelPieceSets.Count)
-            {
-                Debug.Log("All levels complete!");
-            }
+            // Apply next level settings if exists
+            if (currentLevel < settingsPerLevel.Count)
+                //ApplyLevelSettings(currentLevel);
 
-            return;
+                return;
         }
 
-        // Check if we should spawn END next
+        // Check if level finished → spawn ending
         if (piecesSpawnedThisLevel >= piecesPerLevel[currentLevel])
         {
             spawningEnding = true;
-            SpawnNextPiece();
+            SpawnNextPiece();  // immediately spawn ending
             return;
         }
 
-        // Spawn random piece from this level's pool
+        // Spawn random piece from pool
         List<GameObject> pool = levelPieceSets[currentLevel].pieces;
-        GameObject prefabToSpawn = pool[Random.Range(0, pool.Count)];
+        if (pool.Count == 0) return;
 
+        GameObject prefabToSpawn = pool[Random.Range(0, pool.Count)];
         piecesSpawnedThisLevel++;
         SpawnAligned(prefabToSpawn, spawnZ);
     }
 
-    // -----------------------------
-    // SEAMLESS ALIGNMENT
-    // -----------------------------
     void SpawnAligned(GameObject prefab, float spawnZ)
     {
         GameObject last = activePieces.Count > 0 ? activePieces[^1] : null;
         Vector3 spawnPos;
 
         if (last == null)
-        {
             spawnPos = new Vector3(0, 0, spawnZ);
-        }
         else
         {
             Transform lastEnd = last.transform.Find("End");
             Transform nextStart = prefab.transform.Find("Start");
 
             if (lastEnd != null && nextStart != null)
-            {
                 spawnPos = lastEnd.position - (nextStart.position - prefab.transform.position);
-            }
             else
-            {
                 spawnPos = last.transform.position + new Vector3(0, 0, GetPrefabLength(last));
-            }
         }
 
         GameObject obj = Instantiate(prefab, spawnPos, Quaternion.identity);
         activePieces.Add(obj);
     }
 
-    // -----------------------------
-    // CLEANUP
-    // -----------------------------
     void CleanupOldPieces()
     {
         while (activePieces.Count > maxActivePieces)
@@ -146,9 +153,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    // -----------------------------
-    // HELPERS
-    // -----------------------------
     Vector3 GetEndPosition(GameObject prefab)
     {
         Transform end = prefab.transform.Find("End");
@@ -174,5 +178,23 @@ public class LevelManager : MonoBehaviour
         }
 
         return maxZ - minZ;
+    }
+
+    public void ApplyLevelSettings(int levelIndex)
+    {
+        if (levelIndex >= settingsPerLevel.Count) return;
+
+        LevelSettings s = settingsPerLevel[levelIndex];
+
+        RenderSettings.fogDensity = s.fogDensity;
+
+        PlayerController pc = FindObjectOfType<PlayerController>();
+        if (pc != null)
+            pc.forwardSpeed = s.playerSpeed;
+
+        if (Camera.main != null)
+            Camera.main.fieldOfView = s.cameraFOV;
+
+        Debug.Log("Applied settings for level " + levelIndex);
     }
 }
