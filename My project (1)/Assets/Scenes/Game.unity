@@ -342,11 +342,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ba518d41b13c24b913cc827999e404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardSpeed: 45
-  sideSpeed: 40
-  verticalSpeed: 40
+  forwardSpeed: 30
+  sideSpeed: 60
+  verticalSpeed: 50
   boostMultiplier: 1.8
-  maxRoll: 20
+  maxRoll: 30
   maxPitch: 45
   tiltSpeed: 4
   cameraTransform: {fileID: 414257873}
@@ -461,7 +461,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -613,7 +613,12 @@ MonoBehaviour:
     - {fileID: 5784030345845285521, guid: c3ca8bd871122d449bdd18bd753cc949, type: 3}
     - {fileID: 5784030345845285521, guid: a0e4c5dc9347c5e47b5162930882847e, type: 3}
     - {fileID: 5784030345845285521, guid: 98adb673006b7394d8e652aef37600a0, type: 3}
-  - pieces: []
+    - {fileID: 5784030345845285521, guid: e38c5f9edc6c95146b562a7dce2e76d8, type: 3}
+    - {fileID: 5784030345845285521, guid: eeb8e03ef64fd094689955a46aae74b5, type: 3}
+    - {fileID: 5784030345845285521, guid: 7ddf4ec7f1cf4fd43b4381e96ca15ea9, type: 3}
+    - {fileID: 5784030345845285521, guid: 44575e8876ee6ec4cae3c14ee7f0a739, type: 3}
+  - pieces:
+    - {fileID: 5784030345845285521, guid: f282a5439b28a394e942b64a9fbc3acb, type: 3}
   - pieces: []
   - pieces: []
   endingPrefabs:
