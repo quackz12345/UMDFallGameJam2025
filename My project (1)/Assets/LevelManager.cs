@@ -1,18 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(AudioSource))] // Ensures an AudioSource is attached
 public class LevelManager : MonoBehaviour
 {
     [Header("Tutorial")]
     public GameObject tutorialPrefab;
 
     [Header("Levels")]
-    public List<LevelPieceSet> levelPieceSets;  // Pool of prefabs per level
-    public List<GameObject> endingPrefabs;      // Ending prefab per level
-    public List<int> piecesPerLevel;            // How many random pieces to spawn per level
+    public List<LevelPieceSet> levelPieceSets; // Pool of prefabs per level
+    public List<GameObject> endingPrefabs;     // Ending prefab per level
+    public List<int> piecesPerLevel;           // How many random pieces to spawn per level
 
     [Header("Level Settings")]
-    public List<LevelSettings> settingsPerLevel; // Fog, speed, FOV per level
+    public List<LevelSettings> settingsPerLevel; // Fog, speed, FOV, MUSIC per level
 
     [Header("General Settings")]
     public int maxActivePieces = 6;
@@ -23,18 +24,21 @@ public class LevelManager : MonoBehaviour
     private int currentLevel = -1;
     private int piecesSpawnedThisLevel = 0;
     private bool spawningEnding = false;
+    
+    // Reference to the audio source
+    private AudioSource musicSource;
 
     [System.Serializable]
     public class LevelPieceSet
     {
         public List<GameObject> pieces;
     }
+
     private int nextSettingIndex = 0;
 
     public void ApplyNextLevelSetting()
     {
-        if (nextSettingIndex >= settingsPerLevel.Count)
-            return;
+        if (nextSettingIndex >= settingsPerLevel.Count) return;
         nextSettingIndex++;
         ApplyLevelSettings(nextSettingIndex);
     }
@@ -45,19 +49,27 @@ public class LevelManager : MonoBehaviour
         public float fogDensity = 0.01f;
         public float playerSpeed = 10f;
         public float cameraFOV = 60f;
+        [Header("Music")]
+        public AudioClip levelMusic; // <--- New Music Field
     }
 
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
+
+        // Setup Audio Source
+        musicSource = GetComponent<AudioSource>();
+        musicSource.loop = true;
+        musicSource.playOnAwake = false;
+
         SpawnTutorial();
     }
 
     void Update()
     {
         if (activePieces.Count == 0) return;
-
         Vector3 lastEnd = GetEndPosition(activePieces[^1]);
+
         if (player.position.z > lastEnd.z - spawnBuffer)
         {
             SpawnNextPiece();
@@ -69,11 +81,9 @@ public class LevelManager : MonoBehaviour
     {
         GameObject tut = Instantiate(tutorialPrefab, Vector3.zero, Quaternion.identity);
         activePieces.Add(tut);
-
         currentLevel = 0;
         piecesSpawnedThisLevel = 0;
         spawningEnding = false;
-
         ApplyLevelSettings(currentLevel);
     }
 
@@ -94,22 +104,22 @@ public class LevelManager : MonoBehaviour
             if (currentLevel < endingPrefabs.Count && endingPrefabs[currentLevel] != null)
                 SpawnAligned(endingPrefabs[currentLevel], spawnZ);
 
-            currentLevel++;           // Move to next level
+            currentLevel++; // Move to next level
             piecesSpawnedThisLevel = 0;
             spawningEnding = false;
 
             // Apply next level settings if exists
             if (currentLevel < settingsPerLevel.Count)
-                //ApplyLevelSettings(currentLevel);
-
-                return;
+               ApplyLevelSettings(currentLevel); // NOTE: I uncommented this so music switches on level change
+            
+            return;
         }
 
-        // Check if level finished → spawn ending
+        // Check if level finished -> spawn ending
         if (piecesSpawnedThisLevel >= piecesPerLevel[currentLevel])
         {
             spawningEnding = true;
-            SpawnNextPiece();  // immediately spawn ending
+            SpawnNextPiece(); // immediately spawn ending
             return;
         }
 
@@ -176,7 +186,6 @@ public class LevelManager : MonoBehaviour
             minZ = Mathf.Min(minZ, rr.bounds.min.z);
             maxZ = Mathf.Max(maxZ, rr.bounds.max.z);
         }
-
         return maxZ - minZ;
     }
 
@@ -186,15 +195,27 @@ public class LevelManager : MonoBehaviour
 
         LevelSettings s = settingsPerLevel[levelIndex];
 
+        // 1. Apply Fog
         RenderSettings.fogDensity = s.fogDensity;
 
+        // 2. Apply Speed
         PlayerController pc = FindObjectOfType<PlayerController>();
-        if (pc != null)
-            pc.forwardSpeed = s.playerSpeed;
+        if (pc != null) pc.forwardSpeed = s.playerSpeed;
 
-        if (Camera.main != null)
-            Camera.main.fieldOfView = s.cameraFOV;
+        // 3. Apply FOV
+        if (Camera.main != null) Camera.main.fieldOfView = s.cameraFOV;
 
-        Debug.Log("Applied settings for level " + levelIndex);
+        // 4. Apply Music (New Logic)
+        if (s.levelMusic != null)
+        {
+            // Only switch tracks if the new song is different from the current one
+            if (musicSource.clip != s.levelMusic)
+            {
+                musicSource.clip = s.levelMusic;
+                musicSource.Play();
+            }
+        }
+
+        Debug.Log("Applied settings (and music) for level " + levelIndex);
     }
 }

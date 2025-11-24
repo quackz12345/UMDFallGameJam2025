@@ -1,5 +1,7 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,7 +11,6 @@ public class PlayerController : MonoBehaviour
     public float verticalSpeed = 6f;
     public float boostMultiplier = 1.5f;
 
-    // sideSpeed automatically tracks forwardSpeed
     public float sideSpeed => forwardSpeed * sideSpeedMultiplier;
 
     [Header("Camera Tilt")]
@@ -33,10 +34,16 @@ public class PlayerController : MonoBehaviour
     public float introDuration = 2f;
     private bool canControl = false;
 
+    [Header("UI")]
+    public GameObject playAgainButton; // assign in inspector
+
     void Start()
     {
         StartCoroutine(IntroDrop());
         audioSource = GetComponent<AudioSource>();
+
+        if (playAgainButton != null)
+            playAgainButton.SetActive(false);
     }
 
     IEnumerator IntroDrop()
@@ -81,12 +88,21 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Finish"))
+        if (!isHit && !collision.gameObject.CompareTag("Finish"))
         {
             isHit = true;
             rb.useGravity = true;
-            Debug.Log("Player collided with: " + collision.gameObject.name);
             audioSource.PlayOneShot(hitSound);
+            Debug.Log("Player collided with: " + collision.gameObject.name);
+
+            if (playAgainButton != null)
+                playAgainButton.SetActive(true);
         }
+    }
+
+    // Call this from the Play Again button
+    public void PlayAgain()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

@@ -23,12 +23,11 @@ public class MessageTrigger : MonoBehaviour
     {
         textObject.gameObject.SetActive(true);
 
-        // Reset alpha to 1
+        // Reset alpha
         Color c = textObject.color;
         c.a = 1f;
         textObject.color = c;
 
-        // Hold visible
         yield return new WaitForSeconds(holdTime);
 
         // Fade out
@@ -45,7 +44,6 @@ public class MessageTrigger : MonoBehaviour
             yield return null;
         }
 
-        // Disable after fade
         textObject.gameObject.SetActive(false);
     }
 }
