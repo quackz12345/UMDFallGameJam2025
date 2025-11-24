@@ -8,15 +8,22 @@ public class ProceduralDestructibleWall : MonoBehaviour
     public int piecesZ = 10;
     public float pieceSpacing = 0.01f;
 
-    public float explosionForce = 350;
-    public float explosionRadius = 3f;
-    public float explosionUpward = 0.8f;
+    [Header("Optional: Assign one or more materials")]
+    public Material[] materials; // assign in Inspector
+
+    [Header("Tag for all pieces")]
+    public string pieceTag = "Finish"; // default tag
+
+    [Header("Explosion Settings")]
+    public float explosionForce = 5f; // how fast pieces fly out
+    public float upwardForce = 2f;    // vertical push
+    public float forwardBias = 3f;    // how strongly they move forward
+    public float randomSpread = 1f;   // general randomness
 
     private bool broken = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("enter");
         if (broken) return;
 
         if (other.CompareTag("Player"))
@@ -53,11 +60,37 @@ public class ProceduralDestructibleWall : MonoBehaviour
                     piece.transform.position = pos;
                     piece.transform.localScale = pieceSize;
 
-                    Rigidbody rb = piece.AddComponent<Rigidbody>();
-                    rb.mass = 1f;
-                    rb.AddExplosionForce(explosionForce, transform.position, explosionRadius, explosionUpward, ForceMode.Impulse);
+                    // Assign material if available
+                    Renderer rend = piece.GetComponent<Renderer>();
+                    if (materials != null && materials.Length > 0)
+                    {
+                        Material matToUse = materials[UnityEngine.Random.Range(0, materials.Length)];
+                        rend.material = matToUse;
+                    }
 
-                    Destroy(piece, 5f); // optional: cleanup pieces
+                    // Assign tag
+                    piece.tag = pieceTag;
+
+                    // Collider as trigger (so it doesn't push the player)
+                    Collider col = piece.GetComponent<Collider>();
+                    col.isTrigger = true;
+
+                    // Rigidbody for movement
+                    Rigidbody rb = piece.AddComponent<Rigidbody>();
+                    rb.isKinematic = false;
+                    rb.useGravity = true;
+                    rb.mass = 0.5f;
+
+                    // Explosion force biased mostly forward (+Z)
+                    Vector3 randomDir = Vector3.forward * forwardBias +
+                                        new Vector3(
+                                            UnityEngine.Random.Range(-randomSpread, randomSpread),
+                                            UnityEngine.Random.Range(0, upwardForce),
+                                            UnityEngine.Random.Range(-randomSpread, randomSpread)
+                                        );
+                    rb.AddForce(randomDir.normalized * explosionForce, ForceMode.Impulse);
+
+                    Destroy(piece, 5f); // cleanup
                 }
             }
         }
