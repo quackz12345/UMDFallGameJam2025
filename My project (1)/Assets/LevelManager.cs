@@ -3,74 +3,201 @@ using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour
 {
-    [Header("Level Prefabs")]
-    public List<GameObject> levelPrefabs; // Add all your prefabs here
-    public int initialPieces = 3;         // Pieces spawned at start
-    public float spawnOffset = 50f;        // Extra distance between pieces
+    [Header("Tutorial")]
+    public GameObject tutorialPrefab;
 
-    private List<GameObject> activeLevels = new List<GameObject>();
+    [Header("Levels")]
+    public List<LevelPieceSet> levelPieceSets;  // Each level has its own list of prefabs
+    public List<GameObject> endingPrefabs;      // Ending prefab per level
+
+    [Header("Settings")]
+    private List<GameObject> activePieces = new List<GameObject>();
     private Transform player;
+
+    private int currentLevel = -1;                  // -1 = tutorial
+    private List<GameObject> shuffledPieces;       // Shuffled list of prefabs for current level
+    private int pieceIndex = 0;                     // Index in shuffledPieces
+    private bool spawningEnding = false;           // Flag to know when to spawn ending
+
+    [System.Serializable]
+    public class LevelPieceSet
+    {
+        public List<GameObject> pieces;
+    }
 
     void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
 
-        // Spawn initial pieces
-        for (int i = 0; i < initialPieces; i++)
-        {
-            SpawnNextLevel();
-        }
+        // Spawn tutorial first
+        SpawnTutorial();
     }
 
     void Update()
     {
-        if (activeLevels.Count == 0) return;
+        if (activePieces.Count == 0) return;
 
-        GameObject lastLevel = activeLevels[activeLevels.Count - 1];
-        float lastLevelEndZ = lastLevel.transform.position.z + GetPrefabLength(lastLevel) / 2f;
+        GameObject lastPiece = activePieces[^1];
+        Vector3 lastEndPos = GetEndPosition(lastPiece);
 
-        float spawnBuffer = 20f; // How far ahead to trigger the next spawn
-        if (player.position.z > lastLevelEndZ - spawnBuffer)
+        if (player.position.z > lastEndPos.z - spawnBuffer)
         {
-            SpawnNextLevel();
-            DestroyOldestLevel();
+            SpawnNextPiece();
+            CleanupOldPieces();
         }
     }
 
-    void SpawnNextLevel()
+    // ------------------------------
+    // SPAWN TUTORIAL
+    // ------------------------------
+    void SpawnTutorial()
     {
-        // Pick a random prefab (repeats allowed)
-        GameObject prefab = levelPrefabs[Random.Range(0, levelPrefabs.Count)];
+        GameObject tut = Instantiate(tutorialPrefab, Vector3.zero, Quaternion.identity);
+        activePieces.Add(tut);
 
+        // After tutorial, start level 0
+        currentLevel = 0;
+        PrepareLevel(currentLevel);
+    }
+
+    // ------------------------------
+    // PREPARE SHUFFLED LEVEL
+    // ------------------------------
+    void PrepareLevel(int level)
+    {
+        if (level >= levelPieceSets.Count)
+        {
+            Debug.Log("All levels completed!");
+            return;
+        }
+
+        // Copy the list of prefabs so we can shuffle
+        shuffledPieces = new List<GameObject>(levelPieceSets[level].pieces);
+
+        // Shuffle the list
+        for (int i = 0; i < shuffledPieces.Count; i++)
+        {
+            int r = Random.Range(i, shuffledPieces.Count);
+            (shuffledPieces[i], shuffledPieces[r]) = (shuffledPieces[r], shuffledPieces[i]);
+        }
+
+        pieceIndex = 0;
+        spawningEnding = false;
+    }
+
+    // ------------------------------
+    // SPAWN NEXT PIECE IN LEVEL
+    // ------------------------------
+    void SpawnNextPiece()
+    {
         float spawnZ = 0f;
-        if (activeLevels.Count > 0)
+        if (activePieces.Count > 0)
         {
-            GameObject lastLevel = activeLevels[activeLevels.Count - 1];
-            spawnZ = lastLevel.transform.position.z + GetPrefabLength(lastLevel) + spawnOffset;
+            GameObject last = activePieces[^1];
+            spawnZ = GetEndPosition(last).z;
         }
 
-        GameObject newLevel = Instantiate(prefab, new Vector3(0, 0, spawnZ), Quaternion.identity);
-        activeLevels.Add(newLevel);
+        GameObject prefabToSpawn;
+
+        // Check if we need to spawn the ending prefab
+        if (spawningEnding)
+        {
+            prefabToSpawn = endingPrefabs[currentLevel];
+            SpawnAligned(prefabToSpawn, spawnZ);
+
+            // Move to next level
+            currentLevel++;
+            if (currentLevel < levelPieceSets.Count)
+                PrepareLevel(currentLevel);
+
+            return;
+        }
+
+        // If all pieces in this level are spawned, spawn ending next
+        if (pieceIndex >= shuffledPieces.Count)
+        {
+            spawningEnding = true;
+            SpawnNextPiece(); // Immediately spawn ending
+            return;
+        }
+
+        // Spawn the next normal piece
+        prefabToSpawn = shuffledPieces[pieceIndex];
+        pieceIndex++;
+
+        SpawnAligned(prefabToSpawn, spawnZ);
     }
 
-    void DestroyOldestLevel()
+    // ------------------------------
+    // SPAWN WITH SEAMLESS ALIGNMENT
+    // ------------------------------
+    void SpawnAligned(GameObject prefab, float spawnZ)
     {
-        if (activeLevels.Count > initialPieces)
+        GameObject last = activePieces.Count > 0 ? activePieces[^1] : null;
+        Vector3 spawnPos;
+
+        if (last == null)
         {
-            Destroy(activeLevels[0]);
-            activeLevels.RemoveAt(0);
+            spawnPos = new Vector3(0, 0, spawnZ);
+        }
+        else
+        {
+            Transform lastEnd = last.transform.Find("End");
+            Transform nextStart = prefab.transform.Find("Start");
+
+            if (lastEnd != null && nextStart != null)
+            {
+                spawnPos = lastEnd.position - (nextStart.position - prefab.transform.position);
+            }
+            else
+            {
+                spawnPos = last.transform.position + new Vector3(0, 0, GetPrefabLength(last));
+            }
+        }
+
+        GameObject obj = Instantiate(prefab, spawnPos, Quaternion.identity);
+        activePieces.Add(obj);
+    }
+
+    // ------------------------------
+    // CLEANUP OLD PIECES
+    // ------------------------------
+    void CleanupOldPieces()
+    {
+        while (activePieces.Count > maxActivePieces)
+        {
+            Destroy(activePieces[0]);
+            activePieces.RemoveAt(0);
         }
     }
 
-    float GetPrefabLength(GameObject level)
+    // ------------------------------
+    // HELPER FUNCTIONS
+    // ------------------------------
+    Vector3 GetEndPosition(GameObject prefab)
     {
-        Collider col = level.GetComponent<Collider>();
-        if (col != null) return col.bounds.size.z;
+        Transform end = prefab.transform.Find("End");
+        if (end != null) return end.position;
 
-        Renderer rend = level.GetComponentInChildren<Renderer>();
-        if (rend != null) return rend.bounds.size.z;
+        Vector3 pos = prefab.transform.position;
+        pos.z += GetPrefabLength(prefab);
+        return pos;
+    }
 
-        Debug.LogWarning("Prefab has no collider or renderer! Defaulting to 135 units.");
-        return 135f;
+    float GetPrefabLength(GameObject prefab)
+    {
+        Renderer[] renderers = prefab.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0) return 10f;
+
+        float minZ = float.MaxValue;
+        float maxZ = float.MinValue;
+
+        foreach (Renderer rend in renderers)
+        {
+            minZ = Mathf.Min(minZ, rend.bounds.min.z);
+            maxZ = Mathf.Max(maxZ, rend.bounds.max.z);
+        }
+
+        return maxZ - minZ;
     }
 }
