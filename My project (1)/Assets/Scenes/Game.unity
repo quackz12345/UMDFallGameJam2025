@@ -608,21 +608,28 @@ MonoBehaviour:
   tutorialPrefab: {fileID: 5784030345845285521, guid: 17d27e6304827b649aadadec9264c1ee, type: 3}
   levelPieceSets:
   - pieces:
+    - {fileID: 5784030345845285521, guid: 67c66ec42cb625b48b44ad35340ea42d, type: 3}
+    - {fileID: 5784030345845285521, guid: ef5b8eff9fac47f41a21c4c647ba4267, type: 3}
+    - {fileID: 5784030345845285521, guid: 03a6c4838908f534cad1813a02953710, type: 3}
+  - pieces:
     - {fileID: 5784030345845285521, guid: f282a5439b28a394e942b64a9fbc3acb, type: 3}
-    - {fileID: 5784030345845285521, guid: c3ca8bd871122d449bdd18bd753cc949, type: 3}
+    - {fileID: 5784030345845285521, guid: 4fb2f76b51ebe75498acefb8faa335d4, type: 3}
+    - {fileID: 5784030345845285521, guid: eb67fbbc658c7f14e9946d4a71b7cf3d, type: 3}
+    - {fileID: 5784030345845285521, guid: 3225f535e8d49024a8b15baff33032c9, type: 3}
     - {fileID: 5784030345845285521, guid: c3ca8bd871122d449bdd18bd753cc949, type: 3}
     - {fileID: 5784030345845285521, guid: a0e4c5dc9347c5e47b5162930882847e, type: 3}
     - {fileID: 5784030345845285521, guid: 98adb673006b7394d8e652aef37600a0, type: 3}
-    - {fileID: 5784030345845285521, guid: e38c5f9edc6c95146b562a7dce2e76d8, type: 3}
-    - {fileID: 5784030345845285521, guid: eeb8e03ef64fd094689955a46aae74b5, type: 3}
+    - {fileID: 5784030345845285521, guid: 9bed51a38aa14564b91480e8e7b8a2c9, type: 3}
     - {fileID: 5784030345845285521, guid: 7ddf4ec7f1cf4fd43b4381e96ca15ea9, type: 3}
-    - {fileID: 5784030345845285521, guid: 44575e8876ee6ec4cae3c14ee7f0a739, type: 3}
   - pieces:
-    - {fileID: 5784030345845285521, guid: f282a5439b28a394e942b64a9fbc3acb, type: 3}
-  - pieces: []
-  - pieces: []
+    - {fileID: 5784030345845285521, guid: eeb8e03ef64fd094689955a46aae74b5, type: 3}
+    - {fileID: 5784030345845285521, guid: 56087b086bbafd84e94993a391a977a3, type: 3}
   endingPrefabs:
+  - {fileID: 5784030345845285521, guid: 44575e8876ee6ec4cae3c14ee7f0a739, type: 3}
   - {fileID: 5784030345845285521, guid: c01227dc9783d8d4fa1be123013531c4, type: 3}
+  - {fileID: 5784030345845285521, guid: 3a80027251b8f464580e5a7d6b28e6c9, type: 3}
+  - {fileID: 5784030345845285521, guid: e38c5f9edc6c95146b562a7dce2e76d8, type: 3}
+  piecesPerLevel: 040000000a0000000400000001000000
   maxActivePieces: 6
   spawnBuffer: 300
 --- !u!1660057539 &9223372036854775807
