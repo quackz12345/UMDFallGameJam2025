@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public UITimer timer;
     public float forwardSpeed = 10f;
     public float sideSpeed = 8f;
     public float verticalSpeed = 6f;
@@ -43,7 +44,9 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
-        canControl = true;  // Unlock control
+        canControl = true;
+        timer.StartTimer();
+        // Unlock control
     }
 
     void Update()
