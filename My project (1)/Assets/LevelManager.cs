@@ -11,6 +11,9 @@ public class LevelManager : MonoBehaviour
     public List<GameObject> endingPrefabs;      // Ending prefab per level
 
     [Header("Settings")]
+    public int maxActivePieces = 6;
+    public float spawnBuffer = 300f;
+
     private List<GameObject> activePieces = new List<GameObject>();
     private Transform player;
 
