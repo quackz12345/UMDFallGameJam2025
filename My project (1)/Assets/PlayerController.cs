@@ -15,9 +15,12 @@ public class PlayerController : MonoBehaviour
     private float currentRoll = 0f;
     private float currentPitch = 0f;
     private bool isHit = false;
-
+    public TimerText timer;
     public Transform cameraTransform;
     public Rigidbody rb;
+
+    public AudioClip hitSound;   // assign in inspector
+    private AudioSource audioSource;
 
     // --- NEW VARIABLES ---
     public float introDropAmount = 42f;     // How far to drop
@@ -27,6 +30,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         StartCoroutine(IntroDrop());
+        audioSource = GetComponent<AudioSource>();
+
     }
 
     IEnumerator IntroDrop()
@@ -44,6 +49,7 @@ public class PlayerController : MonoBehaviour
         }
 
         canControl = true;  // Unlock control
+        timer.StartTimer();
     }
 
     void Update()
@@ -78,6 +84,8 @@ public class PlayerController : MonoBehaviour
             isHit = true;
             rb.useGravity = true;
             Debug.Log("Player collided with: " + collision.gameObject.name);
+            audioSource.PlayOneShot(hitSound);
+
         }
     }
 }

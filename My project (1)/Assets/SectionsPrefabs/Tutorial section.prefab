@@ -211,7 +211,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 4300004, guid: 60d359b58c958674b89893ee55dedc53, type: 3}
+  m_Mesh: {fileID: 4300004, guid: 7b6bfa7ef86a93e4f83085ba04efafbc, type: 3}
 --- !u!1001 &323425203201269822
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -536,12 +536,6 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4730639306552576, guid: 8f63f2ffa1140de49a84add99bad9eee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6595901484725832111}
-    - targetCorrespondingSourceObject: {fileID: 4730639306552576, guid: 8f63f2ffa1140de49a84add99bad9eee, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5729321476177689462}
     - targetCorrespondingSourceObject: {fileID: 4730639306552576, guid: 8f63f2ffa1140de49a84add99bad9eee, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5157641663686535118}
